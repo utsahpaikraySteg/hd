@@ -1,0 +1,2 @@
+<script>{{ model.CjUrl|safe }}</script>
+{{ model.merkelUrl|safe }}

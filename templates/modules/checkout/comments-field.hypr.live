@@ -1,0 +1,7 @@
+﻿    <div class="mz-l-formfieldgroup-cell">
+      <label for="giftmessage">{{ labels.giftMessage }}:</label>
+    </div>
+    <div class="mz-l-formfieldgroup-cell">
+      <input type="checkbox" name="giftmessage" value="giftmessage" id="giftmessage" {% if model.shopperNotes.giftMessage %}checked="true"{% endif %}>{{ labels.giftMessagecontent }}
+      <textarea id="order-comments" class="mz-checkoutform-comments-field" name="giftMessage" data-mz-value="shopperNotes.giftMessage" maxlength="{{themeSettings.checkoutCommentsLength}}" >{{ model.shopperNotes.giftMessage }}</textarea>
+    </div>

@@ -1,0 +1,124 @@
+
+{% with model.properties|findwhere('attributeFQN', "tenant~limitPerOrder") as limitPerOrder %} 
+    {% preload_json limitPerOrder.values|first "limit" %}
+{% endwith %}
+
+{% with model.properties|findwhere('attributeFQN', "tenant~Video_Id") as video_Id %}
+    {% preload_json video_Id.values|first "Video_Id" %}
+{% endwith %}
+
+<div itemscope itemtype="http://schema.org/Product" class="mz-l-container"> 
+    {% comment %}
+    {% if PageContext.isTablet or PageContext.isDesktop %}
+        {% include "modules/product/product-top-carousel" %}
+    {% endif %}
+    {% endcomment %} 
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div data-mz-productimages class="mz-productimages mz-product-left-container margin-top-15">
+                {% include "modules/product/product-images" %}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="mz-product-top-content">
+                <h1 class="mz-pagetitle" itemprop="name">{{ model.content.productName|replace("'","&rsquo;")|safe }}</h1>
+                <div class="row">
+                    {% with model|get_product_attribute("tenant~brand") as brandName %}
+                        {% for brandCat in model.categories %}  
+                            {% if brandCat.content.name == {{ brandName.values|first|prop("value") }} %}
+                                <div class="col-xs-12 mz-view-all-brand">
+                                    <a href="/shop-by-brand/c/1270">{{ labels.viewAll }}</a> 
+                                    <a href='{% make_url "category" brandCat %}'>{{ brandName.values|first|prop("value") }}</a>
+                                </div>
+                            {% endif %} 
+                        {% endfor %}
+                    {% endwith %}
+                    <div class="col-xs-12">
+                        <div class="mz-productcodes-productcode p-3" itemprop="sku">{{ labels.item}} # {{ model.productCode }}</div>
+                       {% comment %} <div class="mz-reviews-ratings">
+                            <div><img src="/resources/images/harmon/star.jpg" alt="rating"><span>4.9(27) Read a Review | Write A review</span></div>
+                            <div>11 out of 12(92%) reviewers recommend this product</div>
+                        </div> {% endcomment %} 
+                        {% comment %}
+                        <div class="mz-shipping-restiction">
+                            <span>Shipping Restiction text attribute</span>
+                        </div>
+                        {% endcomment %} 
+                    </div>
+                    {% if model.productType != themeSettings.familyProductType %}
+                        <div class="col-xs-7">
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="mz-productdetail-price mz-l-stack-section pull-right text-right prize-mobile-view">
+                            {% include "modules/product/price-stack" %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% comment %}
+                <div class="mz-all-review-container">
+                    <span class="mz-reviews-pdp-stars">
+                        {% include "modules/product/product-ratings" %}
+                    </span>
+                    <span class="mz-reviews-pdp-text">
+                        <a href="#">4.9(10) Read a review | Write a review</a>
+                    </span>
+                </div>
+                {% endcomment %}
+            </div>
+            <div class="clearfix"></div>
+            <div class="mz-productdetail-wrap">
+                {% if model.productType != themeSettings.familyProductType %}
+                    {% include "modules/common/message-bar" %}
+                {% endif %}
+                <div id="product-detail" class="product-detail mz-productdetail mz-l-stack">
+                    {% include "modules/product/product-detail" %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% if pageContext.isEditMode %}<span class="mz-dropzone-heading">Social Sharing Dropzone</span>{% endif %} 
+        <div class="social-sharing col-md-9 col-xs-12{% if model.content.productImages.length <=1 %} mz-share-with-container-other{% endif %}">
+            {% dropzone "social-sharing" scope="template" %}
+        </div>
+    </div>
+    {% if model.productType == themeSettings.familyProductType %}
+        {% include "modules/common/message-bar" %}
+        <hr/>
+        {% include "modules/product/family/family-list" %}
+        <div class="product-detail family-details">
+            <div class="mz-productdetail-conversion-buttons col-xs-12 hide">
+                <div class="col-xs-12 add-to-cart-container">
+                    <button class="mz-productdetail-addtocart font-large button_primary pull-right{% if not model.purchasableState.isPurchasable %} button_disabled{% endif %}" data-mz-action="addToCart" >
+                    {{ labels.addToCart }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="clearfix"></div>
+
+    {% if pageContext.isEditMode %}<span class="mz-dropzone-heading">RTI Widget - Dropzone 1</span>{% endif %}   
+    {% dropzone "rti-widget-1" scope="template" %} 
+
+    {% include "modules/product/product-tabs" %} 
+
+    <!-- WebCollage code snippet. Place the <div> tag as per the UI requirement -->
+    <div id="webcollage" value="{{ model.productCode }}">
+        <div id="wc-power-page"></div>
+        {% block webcollage-loader %}
+        <script>Webcollage.loadProductContent('harmondiscount', '{{ model.productCode }}', { "power-page": { autoPlayAndStop: true } });</script>
+        {% endblock webcollage-loader %}
+    </div>
+   
+    {% if pageContext.isEditMode %}<span class="mz-dropzone-heading">RTI Widget - Dropzone 2</span>{% endif %}     
+    {% dropzone "rti-widget-2" scope="template" %}
+
+    {% if themeSettings.rviEnable %}
+        {% include "modules/product/recent/recently-viewed-products" %}
+        {% require_script "modules/product/recently-viewed-products" %}   
+    {% endif %} 
+
+    {% if pageContext.isEditMode %}<span class="mz-dropzone-heading">Customer Reviews - Bazaar Voice Widget</span>{% endif %} 
+    {% dropzone "bazaar-voice-widget" scope="template" %} 
+
+</div> 

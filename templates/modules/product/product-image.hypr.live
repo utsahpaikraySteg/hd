@@ -1,0 +1,48 @@
+{% if productImage %}
+    <img  
+        {% if productMaxWidth %}
+            src="{% make_url "image" productImage with maxWidth=productMaxWidth %}"
+            onerror="this.src='/cms/files/no-image-hr.jpg'"
+        {% else %}
+            src="{% make_url "image" productImage with maxWidth=themeSettings.productCarouselImageWidth %}"
+            onerror="this.src='/cms/files/no-image-hr.jpg'"
+        {% endif %}
+        {%if isMainImage=="true" %}
+            class="mz-productimages-mainimage" data-mz-productimage-main id="zoom" itemprop="image"
+            {% if productZoomWidth %}
+                data-zoom-image="{% make_url "image" productImage with maxWidth=productZoomWidth as_parameter %}"
+            {% else %}
+            data-zoom-image="{% make_url "image" productImage with maxWidth=themeSettings.productZoomImageMaxWidth as_parameter %}"
+            {% endif %}
+        {% endif %}
+        {% if productImageClass %}
+            class="{{productImageClass}}"
+        {% endif %}
+        {% if productImage.altText %}
+            alt="{{ productImage.altText }}"
+        {% else %}
+            {% if productImage.imageAlternateText %}
+                alt="{{productImage.imageAlternateText}}"
+            {% else %}
+                alt="{{productAltText}}"
+            {% endif %}
+        {% endif %}
+        {% if productImageWidth %}
+            width="{{productImageWidth}}"
+        {% endif %}
+        {% if isThumb %}
+            {% if productMaxWidth %}
+            data-orig-src="{% make_url "image" productImage with maxWidth=productMaxWidth as_parameter %}"
+            {% else %}
+                data-orig-src="{% make_url "image" productImage with maxWidth=themeSettings.productImagePdpMaxWidth %}"
+            {% endif %}
+            {% if productZoomWidth %}
+            data-orig-zoom="{% make_url "image" productImage with maxWidth=productZoomWidth %}"
+            {% else %}
+            data-orig-zoom="{% make_url "image" productImage with maxWidth=themeSettings.productZoomImageMaxWidth %}"
+            {% endif %}
+        {% endif %}
+        >
+        {% else %}
+        <img src='{% make_url "cdn" "/cms/files/no-image-hr.jpg" %}' alt="no-image" />
+{% endif %}

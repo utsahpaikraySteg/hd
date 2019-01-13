@@ -1,0 +1,10 @@
+<div class="qv-rti-content"> 
+	{% for qvRtiData in model %}
+		<h2 class="{{ qvRtiData.placeholderName }} slider-title heading-2"><span>{{ qvRtiData.displayName}}</span></h2>    
+		<div class="rti-recommended-products {{ qvRtiData.placeholderName }} carousel-parent">
+			<div data-rti-recommended-products={{qvRtiData.placeholderName}}>
+				{% include "modules/product/rti-product-list-qv" %}  
+			</div>
+		</div> 
+	{% endfor %}   
+</div> 

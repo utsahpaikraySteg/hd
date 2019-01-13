@@ -1,0 +1,12 @@
+<a href='{% make_url "product" model %}'>
+	{% if model.content.productImages %}
+		{% with model.content.productImages|first as prodImage %}
+			{% include "modules/product/product-image" with productImage=prodImage productMaxWidth="160" as_parameter %}
+			<h5>{{ model.content.productName|safe }}</h5>
+		{% endwith %}
+	{% else %}
+		{% include "modules/product/product-image" with productImage=model.mainImage productMaxWidth="160" as_parameter %}
+		   <h5>{{ model.content.productName|safe }}</h5>
+	{% endif %}
+</a>
+
