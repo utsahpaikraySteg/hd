@@ -60,6 +60,7 @@
 
     
 <div class="mz-l-container">
+    <h1>Cart Page</h1>
 	<h1 class="mz-pagetitle">{{ labels.yourCart }}</h1>
 	<!-- Check if model is not empty and form product table if not-->
 	{% if not model.isEmpty %}  
